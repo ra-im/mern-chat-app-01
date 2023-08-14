@@ -1,23 +1,19 @@
-import logo from './logo.svg';
 import './App.css';
+import { Route } from 'react-router-dom';
+import HomePage from './pages/HomePage';
+import ChatPage from './pages/ChatPage';
+import { Button } from '@chakra-ui/react';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Button colorScheme='blue'>
+        hello
+      </Button>
+      {/* the exact feature makes sure that the router
+      goes to that exact path */}
+      <Route path='/' component={ HomePage } exact />
+      <Route path='/chats' component={ ChatPage } />
     </div>
   );
 }

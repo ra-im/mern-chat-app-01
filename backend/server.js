@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const dotenv = require('dotenv');
 const { chats } = require('./constants/index.js');
 
@@ -7,6 +8,8 @@ const app = express();
 dotenv.config();
 
 PORT = process.env.PORT || 5001;
+
+app.use(cors());
 
 app.get('/', (req, res) => {
     res.send("API is running...")
