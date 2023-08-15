@@ -1,22 +1,32 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 const ChatPage = () => {
 
-    const fetchChats = async () => {
-        const data = await axios.get('api/chat');
+  const fetchChats = async () => {
+      const {data} = await axios.get('/api/chat');
 
-        console.log(data);
-    }
+    console.log(data);
+    setChats(data);
+  }
 
-    useEffect(() => {
-        fetchChats();
-    }, [])
+  useEffect(() => {
+      fetchChats();
+  }, [])
+  
+  const [chats, setChats] = useState([]);
     
 
   return (
-    <div>ChatPage</div>
-  )
+    <div>
+      {chats.map((chat, index) => (
+        // Render each chat item here, using the 'chat' object
+        // and 'index' for unique keys if needed
+        <div key={chat._id}>{chat.chatName}</div>
+      ))}
+    </div>
+  );
+
 }
 
 export default ChatPage

@@ -7,9 +7,6 @@ import { Button } from '@chakra-ui/react';
 function App() {
   return (
     <div className="App">
-      <Button colorScheme='blue'>
-        hello
-      </Button>
       {/* the exact feature makes sure that the router
       goes to that exact path */}
       <Route path='/' component={ HomePage } exact />
