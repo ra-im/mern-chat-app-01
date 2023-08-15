@@ -1,0 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;1,100&family=Libre+Barcode+39+Text&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;1,900&display=swap');
+
+.App{
+    min-height: 100vh;
+    background-image: url("./assets/bg/bg-2.svg");
+    background-size: cover;
+    display: flex;
+}
