@@ -1,11 +1,14 @@
 const express = require('express');
 // const cors = require('cors');
 const dotenv = require('dotenv');
+const { connectDB } = require('./config/db.js');
+const colors = require('colors')
 const { chats } = require('./constants/index.js');
 
 const app = express();
 
 dotenv.config();
+connectDB();
 
 PORT = process.env.PORT || 5001;
 
@@ -28,4 +31,4 @@ app.get('/api/chat/:id', (req, res) => {
     res.send(singleChat);
 })
 
-app.listen(PORT, console.log(`server is running on port ${PORT}`));
+app.listen(PORT, console.log(`server is running on port http://localhost:${PORT}`.yellow.underline));
