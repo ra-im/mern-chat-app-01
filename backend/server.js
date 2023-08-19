@@ -1,8 +1,13 @@
 const express = require('express');
 // const cors = require('cors');
 const dotenv = require('dotenv');
-const { connectDB } = require('./config/db.js');
-const userRoutes = require('./routes/userRoutes')
+
+const { connectDB } = require('./config/db');
+const userRoutes = require('./routes/userRoutes');
+
+const { notFound } = require('./middlewares/notFound');
+const { statusCode } = require('./middlewares/statusCode');
+
 const colors = require('colors')
 const { chats } = require('./constants/index.js');
 
@@ -36,5 +41,9 @@ app.get('/api/chat/:id', (req, res) => {
 })
 
 app.use('/api/user', userRoutes);
+
+// error handling middlewares
+app.use(notFound);
+app.use(statusCode);
 
 app.listen(PORT, console.log(`server is running on port http://localhost:${PORT}`.yellow.underline));
