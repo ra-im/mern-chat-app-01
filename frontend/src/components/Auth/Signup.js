@@ -21,10 +21,10 @@ const Signup = () => {
     
     const handleClick1 = () => setShowPasswd(!showPasswd)
     const handleClick2 = () => setShowConPasswd(!showConPasswd)
-    const handleSubmit = () => {
+    const uploadImage = (pics) => {
 
     }
-    const uploadImage = (pics) => {
+    const handleSubmit = () => {
 
     }
 

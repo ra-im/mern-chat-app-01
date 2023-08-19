@@ -6,7 +6,6 @@
 // display picture of the user
 
 const mongoose = require('mongoose');
-const defaultPic = require('../constants/user-icon.png');
 
 const userModel = mongoose.Schema(
     {
@@ -16,6 +15,7 @@ const userModel = mongoose.Schema(
         },
         email: {
             type: String,
+            unique: true,
             required: true
         },
         password: {
@@ -25,7 +25,7 @@ const userModel = mongoose.Schema(
         pic: {
             type: String,
             required: true,
-            default: { defaultPic }
+            default: 'https://cdn-icons-png.flaticon.com/128/1077/1077114.png'
         }
     },
 

@@ -2,6 +2,7 @@ const express = require('express');
 // const cors = require('cors');
 const dotenv = require('dotenv');
 const { connectDB } = require('./config/db.js');
+const userRoutes = require('./routes/userRoutes')
 const colors = require('colors')
 const { chats } = require('./constants/index.js');
 
@@ -11,6 +12,9 @@ dotenv.config();
 connectDB();
 
 PORT = process.env.PORT || 5001;
+
+// allows express to accept JSON data
+app.use(express.json());
 
 // app.use(cors());
 
@@ -30,5 +34,7 @@ app.get('/api/chat/:id', (req, res) => {
     singleChat = chats.find((c) => c._id === req.params.id);
     res.send(singleChat);
 })
+
+app.use('/api/user', userRoutes);
 
 app.listen(PORT, console.log(`server is running on port http://localhost:${PORT}`.yellow.underline));
