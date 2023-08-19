@@ -9,7 +9,7 @@ const { notFound } = require('./middlewares/notFound');
 const { statusCode } = require('./middlewares/statusCode');
 
 const colors = require('colors')
-const { chats } = require('./constants/index.js');
+const { chats } = require('./constants/index');
 
 const app = express();
 
