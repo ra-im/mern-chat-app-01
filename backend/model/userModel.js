@@ -6,6 +6,7 @@
 // display picture of the user
 
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 
 const userModel = mongoose.Schema(
     {
@@ -35,6 +36,22 @@ const userModel = mongoose.Schema(
         timestamps: true
     }
 )
+
+
+// password validation
+userModel.methods.validatePasswd = async function (userInput) {
+    return await bcrypt.compare(userInput, this.password);
+}
+
+// password encryption
+userModel.pre('save', async function (next) {
+    if (!this.isModified) {
+        next();
+    }
+
+    const salt = await bcrypt.genSalt(16);
+    this.password = await bcrypt.hash(this.password, salt);
+})
 
 const User = mongoose.model("User", userModel);
 
