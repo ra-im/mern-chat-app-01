@@ -9,12 +9,14 @@ import {
     useToast
 } from '@chakra-ui/react'
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import axios from 'axios';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const Signup = () => {
     const [name, setName] = useState();
     const [email, setEmail] = useState();
-    const [Password, setPassword] = useState();
+    const [password, setPassword] = useState();
     const [confirmPassword, setConfirmPassword] = useState();
     const [pic, setPic] = useState();
 
@@ -23,9 +25,11 @@ const Signup = () => {
     const [isLoading, setIsLoading] = useState(false)
 
     const toast = useToast();
+    const history = useHistory();
     
-    const handleClick1 = () => setShowPasswd(!showPasswd)
-    const handleClick2 = () => setShowConPasswd(!showConPasswd)
+    const handleClick1 = () => setShowPasswd(!showPasswd);
+    const handleClick2 = () => setShowConPasswd(!showConPasswd);
+
     const uploadImage = (pics) => {
         setIsLoading(true);
 
@@ -77,8 +81,86 @@ const Signup = () => {
         }
     }
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
+        setIsLoading(true);
 
+        // handle empty fields
+        if (!name || !email || !password || !confirmPassword) {
+            toast({
+                title: 'Fill up the required fields',
+                duration: 5500,
+                status: 'warning',
+                position: 'top',
+                isClosable: true
+            })
+
+            setIsLoading(false);
+            return;
+        }
+
+        // handle password mismatch
+        if (password !== confirmPassword) {
+            toast({
+                title: 'Password mismatch',
+                duration: 5500,
+                status: 'warning',
+                position: 'top',
+                isClosable: true
+            })
+
+            setIsLoading(false);
+            return;
+        }
+
+        // make api reques to store image in mongoDB
+        try {
+            // configure the request headers
+            const config = {
+                headers: {
+                    'Content-type': 'application/json',
+                }
+            }
+
+            // make api request
+            const { data } = await axios.post(
+                '/api/user', // api endpoint
+                {
+                    name,
+                    email,
+                    password,
+                    pic
+                },
+                config // request header configuration
+            );
+
+            toast({
+                title: 'You have successfully signed up',
+                duration: 5500,
+                status: 'success',
+                position: 'top',
+                isClosable: true
+            });
+
+            // save data to local storage
+            localStorage.setItem('userDetails', JSON.stringify(data));
+            setIsLoading(false);
+
+            // automatically redirect the user to the chats page
+            history.push('/chat');
+        } catch (error) {
+            console.log(error);
+            toast({
+                title: 'Oops, something went wrong...',
+                description: error.response.data.message,
+                duration: 5500,
+                status: 'warning',
+                position: 'top',
+                isClosable: true
+            });
+
+            setIsLoading(false);
+            return;
+        }
     }
 
     return (
