@@ -6,7 +6,7 @@ const { connectDB } = require('./config/db');
 const userRoutes = require('./routes/userRoutes');
 
 const { notFound } = require('./middlewares/notFound');
-const { statusCode } = require('./middlewares/statusCode');
+const { handleStatusCodeError } = require('./middlewares/statusCode');
 
 const colors = require('colors')
 const { chats } = require('./constants/index');
@@ -44,6 +44,6 @@ app.use('/api/user', userRoutes);
 
 // error handling middlewares
 app.use(notFound);
-app.use(statusCode);
+app.use(handleStatusCodeError);
 
 app.listen(PORT, console.log(`server is running on port http://localhost:${PORT}`.yellow.underline));

@@ -1,5 +1,6 @@
 const express = require('express');
-const { signupUser, signinUser } = require('../controller/userControllers');
+const { signupUser, signinUser, allUsers } = require('../controller/userControllers');
+const { authenticate } = require('../middlewares/userAuth');
 
 // create an instance of the route usig express
 const router = express.Router();
@@ -18,7 +19,12 @@ const router = express.Router();
 
 // signin authentication route for a single user
 router.post('/signin', signinUser);
-// signUp authentication route for a single user
-router.route('/').post(signupUser);
+
+// /api/user route handlers
+router.route('/')
+	// signup a single user
+	.post(signupUser)
+	// search for all users
+	.get(authenticate, allUsers);
 
 module.exports = router;

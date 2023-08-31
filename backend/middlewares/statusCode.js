@@ -1,12 +1,12 @@
 // handles status errors
-const statusCode = (err, req, res, next) => {
-    const code = res.code === 200 ? 500 : res.code;
+const handleStatusCodeError = (err, req, res, next) => {
+    const statusCode = res.StatusCode === 200 ? 500 : res.statusCode;
 
-    res.status(code);
+    res.status(statusCode);
     res.json({
         message: err.message,
         stack: process.env.NODE_ENV === 'production' ? null : err.stack
     });
 };
 
-module.exports = { statusCode };
+module.exports = { handleStatusCodeError };

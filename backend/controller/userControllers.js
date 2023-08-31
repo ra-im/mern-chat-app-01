@@ -13,7 +13,7 @@ const signupUser = asyncHandler(async (req, res) => {
     console.log('Name:', name);
     console.log('Email:', email);
     console.log('Password:', password);
-    console.log('reqquest', req.body);
+    console.log('request', req.body);
     
     // handle empty fields
     if (!name || !email || !password) {
@@ -85,4 +85,36 @@ const signinUser = asyncHandler(async (req, res) => {
     }
 });
 
-module.exports = { signupUser, signinUser };
+const allUsers = asyncHandler(async (req, res) => {
+// this api controller targets the /api/user endpoint
+// requests can be made through the body by using
+// the post requests => /api/user || /api/user:id
+// or
+// queries => /api/user?keyword=value
+
+    // req.query.nameOfQuery
+    // however, when tryiong to get _id we use req.params._id
+    const keyword = req.query.search
+        ? {
+            // using the $or operator in mongoBD to execute some logic
+            // if anyone of the array of condtionals is true
+            $or: [
+                { name: { $regex: req.query.search, $options: 'i' } },
+                { email: { $regex: req.query.search, $options: 'i' } },
+            ]
+        } : {};
+
+     console.log(keyword);
+
+    // make query to mongoDB
+    const users = await User
+        .find(keyword) // find user by keyword
+        .find({ _id: { $ne: req.user._id } }); // exclude the user making the request
+        // to access the value of req.user._id, we must first
+        // authenticate the current user (i.e signin)
+        // and successfully validate the JWT (token)
+    
+    res.send(users);
+});
+
+module.exports = { signupUser, signinUser, allUsers };
