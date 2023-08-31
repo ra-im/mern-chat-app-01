@@ -5,25 +5,98 @@ import {
   Input,
   InputGroup,
   InputRightElement,
-  VStack
+  VStack,
+  useToast
 } from '@chakra-ui/react'
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import axios from 'axios';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const Signin = () => {
   const [name, setName] = useState();
   const [email, setEmail] = useState();
-  const [Password, setPassword] = useState();
-  const [showPasswd, setShowPasswd] = useState(false)
-  
-  const handleClick = () => setShowPasswd(!showPasswd)
-  const handleSubmit = () => {
+  const [password, setPassword] = useState();
+  const [showPasswd, setShowPasswd] = useState(false);
 
-  }
+  const [isLoading, setIsLoading] = useState(false);
+
+  const toast = useToast();
+  const history = useHistory();
+  
+  const handleClick = () => setShowPasswd(!showPasswd);
+  const handleSubmit = async () => {
+    setIsLoading(true);
+
+    // handle empty fields
+    if (!email || !password) {
+      toast({
+        title: 'Fill up the required fields',
+        duration: 5500,
+        status: 'warning',
+        position: 'top',
+        isClosable: true
+      })
+
+      setIsLoading(false);
+      return;
+    }
+
+    // make api requets to store image in mongoDB
+    try {
+      // configure the request headers
+      const config = {
+        headers: {
+          'Content-type': 'application/json',
+        }
+      }
+
+      // make api request
+      const { data } = await axios.post(
+        '/api/user/signin', // api endpoint
+        {
+          email,
+          password,
+        },
+        config // request header configuration
+      );
+
+      // alert success message
+      toast({
+        title: 'You have successfully signed up',
+        duration: 5500,
+        status: 'success',
+        position: 'top',
+        isClosable: true
+      });
+
+      // save data to local storage
+      localStorage.setItem('userDetails', JSON.stringify(data));
+      setIsLoading(false);
+
+      // automatically redirect the user to the chats page
+      history.push('/chat');
+          
+      // console.log(JSON.stringify(data));
+    } catch (error) {
+      console.log(error);
+      toast({
+        title: 'Oops, something went wrong...',
+        description: error.response.data.message,
+        duration: 5500,
+        status: 'warning',
+        position: 'top',
+        isClosable: true
+      });
+
+      setIsLoading(false);
+      return;
+    }
+  };
 
   return (
     <VStack spacing={'6px'}>
-      // username
+      {/* username */}
       <FormControl isRequired id='username'>
           <FormLabel>
               Username
@@ -33,10 +106,11 @@ const Signin = () => {
             onChange={(e) => {
               setName(e.target.value);
             }}
+            value={name}
           />
       </FormControl>
 
-      // email
+      {/* email */}
       <FormControl isRequired id='email'>
         <FormLabel>
           E-mail
@@ -47,10 +121,11 @@ const Signin = () => {
             setEmail(e.target.value);
           }}
           type={'email'}
+          value={email}
         />
       </FormControl>
 
-      // password
+      {/* password */}
       <FormControl isRequired id='passwd'>
         <FormLabel>
             Password
@@ -62,6 +137,7 @@ const Signin = () => {
                 setPassword(e.target.value);
               }}
               type={showPasswd ? 'text' : 'password'}
+              value={password}
             />
             <InputRightElement>
               <Button
@@ -73,21 +149,23 @@ const Signin = () => {
           </InputGroup>
       </FormControl>
 
-      // sign up Button
+      {/* sign up Button */}
       <Button
         onClick={handleSubmit}
         bg={"custom.accent"}
         style={{marginTop: 15}}
         width={'100%'}
+        isLoading={isLoading}
       >
         Sign in
       </Button>
 
-      // sign up as a GUEST Button
+      {/* sign up as a GUEST Button */}
       <Button
         onClick={() => {
+          setName('Guest');
           setEmail('guest@example.com');
-          setPassword('1234')
+          setPassword('1234');
         }}
         bg={"custom.pop"}
         style={{marginTop: 15}}

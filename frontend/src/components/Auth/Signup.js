@@ -48,7 +48,7 @@ const Signup = () => {
 
         // handle image type (png or jpeg)
         if (pics.type === 'image/png' || pics.type === 'image/jpeg') {
-            const data = new FormData;
+            const data = new FormData();
 
             data.append('file', pics);
             data.append('upload_preset', 'chatz-hye');
@@ -165,7 +165,7 @@ const Signup = () => {
 
     return (
         <VStack spacing={'6px'}>
-            // username
+            {/* username */}
             <FormControl isRequired id='username'>
                 <FormLabel>
                     Username
@@ -178,7 +178,7 @@ const Signup = () => {
                 />
             </FormControl>
 
-            // email
+            {/* email */}
             <FormControl isRequired id='email'>
                 <FormLabel>
                     E-mail
@@ -192,7 +192,7 @@ const Signup = () => {
                 />
             </FormControl>
 
-            // password
+            {/* password */}
             <FormControl isRequired id='passwd'>
                 <FormLabel>
                     Password
@@ -215,7 +215,7 @@ const Signup = () => {
                 </InputGroup>
             </FormControl>
 
-            // confirm password
+            {/* confirm password */}
             <FormControl isRequired id='confirm-passwd'>
                 <FormLabel>
                     Password
@@ -238,7 +238,7 @@ const Signup = () => {
                 </InputGroup>
             </FormControl>
 
-            // choose profile photo
+            {/* choose profile photo */}
             <FormControl id='pic'>
                 <FormLabel>
                     Photo
@@ -252,7 +252,7 @@ const Signup = () => {
                 />
             </FormControl>
 
-            // sign up Button
+            {/* sign up Button */}
             <Button
                 onClick={handleSubmit}
                 bg={"custom.accent"}
