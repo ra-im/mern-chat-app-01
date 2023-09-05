@@ -3,7 +3,8 @@ const { authenticate } = require('../middlewares/userAuth');
 const {
 	duoChat,
 	allChats,
-	createGroupChat
+	createGroupChat,
+	renameGroupChat
 } = require('../controller/chatControllers');
 
 const router = express.Router();
@@ -13,7 +14,7 @@ router.route('/')
 	.get(authenticate, allChats);
 
 router.post('/creategroupchat', authenticate, createGroupChat);
-//router.put('/renamegroupchat', authenticate, renameGroupChat);
+router.put('/renamegroupchat', authenticate, renameGroupChat);
 //router.put('/leavegroupchat', authenticate, leaveGroupChat);
 //router.put('/joingroupchat', authenticate, joinGroupChat);
 

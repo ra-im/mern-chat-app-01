@@ -139,4 +139,37 @@ const createGroupChat = asyncHandler(async (req, res) => {
 	}
 })
 
-module.exports = { duoChat, allChats, createGroupChat };
+const renameGroupChat = asyncHandler(async (req, res) => {
+	// to rename a group chat, we need to
+	// access the group chatId and chatName from d req body
+	// then find group chat by id and update the name
+
+	const { chatId, chatName } = req.body;
+
+	const newChatName = await Chat.findByIdAndUpdate(
+		chatId,
+		{
+			chatName: chatName,
+		},
+		{
+			new: true,
+		}
+	)
+		.populate('users', '-password')
+		.populate('groupAdmin', '-password');
+	
+	// validate the existence of newChatName
+	if (!newChatName) {
+		res.status(404);
+		throw new Error('No group chat with this name')
+	} else {
+		res.json(newChatName);
+	}
+});
+
+module.exports = {
+	duoChat,
+	allChats,
+	createGroupChat,
+	renameGroupChat,
+};
