@@ -4,7 +4,9 @@ const {
 	duoChat,
 	allChats,
 	createGroupChat,
-	renameGroupChat
+	renameGroupChat,
+	leaveGroupChat,
+	joinGroupChat,
 } = require('../controller/chatControllers');
 
 const router = express.Router();
@@ -15,7 +17,7 @@ router.route('/')
 
 router.post('/creategroupchat', authenticate, createGroupChat);
 router.put('/renamegroupchat', authenticate, renameGroupChat);
-//router.put('/leavegroupchat', authenticate, leaveGroupChat);
-//router.put('/joingroupchat', authenticate, joinGroupChat);
+router.put('/leavegroupchat', authenticate, leaveGroupChat);
+router.put('/joingroupchat', authenticate, joinGroupChat);
 
 module.exports = router;

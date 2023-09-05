@@ -42,7 +42,7 @@ const duoChat = asyncHandler(async (req, res) => {
 		var chatData = {
 			chatName: 'sender',
 			isGroupChat: false,
-			users: [userId, req.user._id]
+			users: [userId, req.user._id],
 		};
 
 		try {
@@ -146,24 +146,68 @@ const renameGroupChat = asyncHandler(async (req, res) => {
 
 	const { chatId, chatName } = req.body;
 
-	const newChatName = await Chat.findByIdAndUpdate(
+	const renameChat = await Chat.findByIdAndUpdate(
 		chatId,
-		{
-			chatName: chatName,
-		},
-		{
-			new: true,
-		}
+		{ chatName: chatName },
+		{ new: true },
 	)
 		.populate('users', '-password')
 		.populate('groupAdmin', '-password');
 	
 	// validate the existence of newChatName
-	if (!newChatName) {
+	if (!renameChat) {
 		res.status(404);
-		throw new Error('No group chat with this name')
+		throw new Error('Unable to find the group chat')
 	} else {
-		res.json(newChatName);
+		res.json(renameChat);
+	}
+});
+
+const leaveGroupChat = asyncHandler(async (req, res) => {
+	// to leave a group / remove a user froma group, we
+	// get the group chatId, userId of the user from req body
+	// then find group chat by Id and remove
+
+	const { chatId, userId } = req.body;
+
+	const leaveGroup = await Chat.findByIdAndUpdate(
+		chatId,
+		{ $pull: { users: userId } },
+		{ new: true },
+	)
+		.populate('users', '-password')
+		.populate('groupAdmin', '-password');
+	
+	// validate the existence of a new user
+	if (!leaveGroup) {
+		res.status(404);
+		throw new Error('unable to find the group chat');
+	} else {
+		res.json(leaveGroup);
+	}
+});
+
+const joinGroupChat = asyncHandler(async (req, res) => {
+	// to join a group / add a user to a group
+	// get the group chatId and the userId of the new user from req body
+	// then find group chat by id and update
+
+	const { chatId, userId } = req.body;
+
+	const joinGroup = await Chat.findByIdAndUpdate(
+		chatId,
+		{ $push: { users: userId } },
+		{ new: true },
+	)
+		.populate('users', '-password')
+		.populate('groupAdmin', '-password');
+	
+	// validate the existence of a new user
+	if (!joinGroup) {
+		res.status(404);
+		throw new Error('unable to find the group chat');
+	} else {
+		res.json(joinGroup);
 	}
 });
 
@@ -172,4 +216,6 @@ module.exports = {
 	allChats,
 	createGroupChat,
 	renameGroupChat,
+	leaveGroupChat,
+	joinGroupChat,
 };
