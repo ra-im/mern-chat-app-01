@@ -70,9 +70,22 @@ const allChats = asyncHandler(async (req, res) => {
 		Chat.find(
 			{ users: { $elemMatch: { $eq: req.user._id } } },
 		)
-			.then((response) => res.send(response));
+			.populate('users', '-password')
+			.populate('groupAdmin', '-password')
+			.populate('recentChat')
+			.sort({ updatedAt: -1 })
+			.then(async (response) => {
+				response = await User
+					.populate(response, {
+						path: 'recentChat.sender',
+						select: 'name email pic'
+					});
+				
+				res.status(200).send(response);
+			});
 	} catch (error) {
-		
+		res.status(400);
+		throw new Error(error.message);
 	}
 })
 
