@@ -24,7 +24,7 @@ const chatModel = mongoose.Schema(
         }],
         recentChat: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "Chats"
+            ref: "Message"
         },
         groupAdmin: {
             type: mongoose.Schema.Types.ObjectId,
@@ -38,8 +38,8 @@ const chatModel = mongoose.Schema(
         timestamps: true
     }
 
-)
+);
 
 const Chat = mongoose.model("Chat", chatModel);
 
-module.exports = {Chat}
+module.exports = Chat;
