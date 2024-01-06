@@ -3,7 +3,7 @@ import React from 'react';
 const RecentChats = () => {
 	return (
 		<div style={{background: 'yellow'}}>
-			RECENTCHATS
+			RECENT CHATS
 		</div>
 	)
 }

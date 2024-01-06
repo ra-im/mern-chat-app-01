@@ -68,8 +68,13 @@ const allChats = asyncHandler(async (req, res) => {
 	// query mongoDB for all the chats for this user.
 
 	try {
-		Chat.find(
-			{ users: { $elemMatch: { $eq: req.user._id } } },
+		Chat.find({
+			users: {
+				$elemMatch: {
+					$eq: req.user._id
+				}
+			}
+		},
 		)
 			.populate('users', '-password')
 			.populate('groupAdmin', '-password')
@@ -149,7 +154,7 @@ const renameGroupChat = asyncHandler(async (req, res) => {
 	const renameChat = await Chat.findByIdAndUpdate(
 		chatId,
 		{ chatName: chatName },
-		{ new: true },
+		{ new: true }, // to return the updated value of group name
 	)
 		.populate('users', '-password')
 		.populate('groupAdmin', '-password');

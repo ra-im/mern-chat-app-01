@@ -75,7 +75,7 @@ const Signin = () => {
       setIsLoading(false);
 
       // automatically redirect the user to the chats page
-      history.push('/chat');
+      history.push('/chats');
           
       // console.log(JSON.stringify(data));
     } catch (error) {
@@ -163,7 +163,7 @@ const Signin = () => {
       {/* sign up as a GUEST Button */}
       <Button
         onClick={() => {
-          setName('Guest');
+          setName('Guest User');
           setEmail('guest@example.com');
           setPassword('1234');
         }}

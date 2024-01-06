@@ -11,14 +11,13 @@ import {
 	Text,
 	Tooltip
 } from '@chakra-ui/react';
-import { AddIcon, BellIcon, ChevronDownIcon, EditIcon, ExternalLinkIcon, RepeatIcon } from '@chakra-ui/icons';
+import { AddIcon, BellIcon, ChevronDownIcon, EditIcon, ExternalLinkIcon, QuestionOutlineIcon, RepeatIcon } from '@chakra-ui/icons';
 import React, { useState } from 'react';
 import { useChatState } from '../../Context/ChatProvider';
 import ProfileLayout from './ProfileLayout';
 import { useHistory } from 'react-router-dom';
 
 const Sidebar = () => {
-	const { user } = useChatState();
 
 	// define states
 	// define loading states
@@ -29,6 +28,8 @@ const Sidebar = () => {
 	const [searchUser, setSearchUser] = useState('');
 	// define the state of the searchUser keyword array of posible results
 	const [searchUserResult, setSearchUserResult] = useState([]);
+
+	const { user } = useChatState();
 
 	const history = useHistory();
 
@@ -83,7 +84,7 @@ const Sidebar = () => {
 					{/*notification menu*/}
 					<Menu>
 						<MenuButton>
-							<BellIcon fontSize={'2xl'}/>
+							<BellIcon fontSize={'2xl'} />
 						</MenuButton>
 						{/*<MenuList>
 							**items
@@ -101,7 +102,7 @@ const Sidebar = () => {
 						>
 							<Avatar
 								name={user.name}
-								size={'md'}
+								size={'sm'}
 								background={'custom.tertiary'}
 								src={user.pic}
 								objectFit={'contain'}
@@ -109,23 +110,17 @@ const Sidebar = () => {
 						</MenuButton>
 						<MenuList>
 							<ProfileLayout user={user}>
-						    {/*<MenuItem icon={<AddIcon />} command='⌘T'>
-						      My profile
-						    </MenuItem>*/}
+						    <MenuItem >
+									My profile
+						    </MenuItem>
 							</ProfileLayout>
-					    <MenuItem icon={<ExternalLinkIcon />} command='⌘N'>
-					      Create group
-					    </MenuItem>
-					    <MenuItem icon={<RepeatIcon />} command='⌘⇧N'>
-					      Open Closed Tab
-							</MenuItem>
 							
 							<MenuDivider />
 
-					    <MenuItem icon={<EditIcon />} command='⌘O' onClick={handleSignout}>
+					    <MenuItem icon={<EditIcon />} onClick={handleSignout}>
 					      Signout
 							</MenuItem>
-					    <MenuItem icon={<EditIcon />} command='⌘O'>
+					    <MenuItem icon={<QuestionOutlineIcon />}>
 					      Help
 							</MenuItem>
 							
