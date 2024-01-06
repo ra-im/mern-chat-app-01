@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
   Box,
   Container,
@@ -11,8 +11,23 @@ import {
 } from '@chakra-ui/react';
 import Signin from '../components/Auth/Signin';
 import Signup from '../components/Auth/Signup';
+import { useHistory } from 'react-router-dom';
 
 const HomePage = () => {
+  const history = useHistory();
+
+	// on refreshing the page
+  useEffect(() => {
+    // if userDetails exists in local storage, it implies that
+    // user is logged in
+		const isLoggedIn = JSON.parse(localStorage.getItem('userDetails'));
+
+    // auto  redirect user to chat page if logged in
+		if (isLoggedIn) {
+			history.push('/chats');
+		}
+	}, [history]);
+
   return (
     <Container maxW='xl' centerContent>
       <Box
@@ -59,4 +74,4 @@ const HomePage = () => {
   )
 }
 
-export default HomePage
+export default HomePage;
