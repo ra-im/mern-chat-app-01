@@ -16,6 +16,9 @@ const ChatContext = createContext();
 // create the context component
 const ChatProvider = ({ children }) => {
 	const [user, setUser] = useState(); // manage/share the state of user data
+	const [selectedChat, setSelectedChat] = useState();
+	const [chats, setChats] = useState([]);
+
 	const history = useHistory();
 
 	// on refreshing the page
@@ -30,7 +33,7 @@ const ChatProvider = ({ children }) => {
 	}, [history]);
 	
 	return (
-		<ChatContext.Provider value={{ user, setUser }}>
+		<ChatContext.Provider value={{ user, setUser, selectedChat, setSelectedChat, chats, setChats }}>
 			{children}
 		</ChatContext.Provider>
 	)
